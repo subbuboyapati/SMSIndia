@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone No"
+            android:id="@+id/phone_text"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/phone_edit"
+            android:layout_below="@+id/phone_text"
+            android:layout_alignLeft="@+id/phone_text"
+            android:layout_marginTop="15dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:id="@+id/msg_text"
+            android:layout_below="@+id/phone_edit"
+            android:layout_alignLeft="@+id/phone_edit"
+            android:layout_marginTop="15dp"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/msg_edit"
+            android:minWidth="250dp"
+            android:lines="4"
+            android:layout_below="@+id/msg_text"
+            android:layout_alignLeft="@+id/msg_text"
+            android:layout_marginTop="15dp"/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logout_button"
+            android:layout_alignTop="@+id/phone_text"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/shut_down"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/send_button"
+            android:width="150dp"
+            android:layout_below="@+id/msg_edit"
+            android:layout_alignLeft="@+id/msg_edit"
+            android:layout_marginTop="15dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/response_text"
+            android:layout_below="@+id/send_button"
+            android:layout_alignLeft="@+id/send_button"
+            android:layout_marginTop="20dp"/>
+
+</RelativeLayout>
