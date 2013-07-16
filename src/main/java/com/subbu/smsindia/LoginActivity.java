@@ -1,5 +1,7 @@
 package com.subbu.smsindia;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,9 +21,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -38,6 +42,7 @@ public class LoginActivity extends Activity implements AdapterView.OnItemSelecte
     private TextView invalidData;
 
     public static final String LOG_SMSINDIA = "SMS India";
+    private Integer loginResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +61,28 @@ public class LoginActivity extends Activity implements AdapterView.OnItemSelecte
                 String uname = username.getText().toString();
                 String pwd = password.getText().toString();
                 if (uname.equals("") || pwd.equals("")) {
-
+                    invalidData.setText("Username/Password should not empty.");
+                    return;
                 } else {
                     try {
-                        Integer loginResult = new SendMessage().execute(uname, pwd, provider, "", "").get();
+                        loginResult = new SendMessage().execute(uname, pwd, provider, "", "").get();
                         Log.d(LOG_SMSINDIA, loginResult + "");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
+                }
+                if (loginResult == -4) {
+                    invalidData.setText("Username / password is wrong.");
+                } else if (loginResult == 1) {
+                    Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                    intent.putExtra("username", uname);
+                    intent.putExtra("password", pwd);
+                    intent.putExtra("provider", provider);
+                    startActivity(intent);
+                } else {
+                    invalidData.setText("Error. Try Again.");
                 }
             }
         });
@@ -99,9 +116,16 @@ public class LoginActivity extends Activity implements AdapterView.OnItemSelecte
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        new MessageActivity().logout();
+    }
 }
 
 class SendMessage extends AsyncTask<String, Void, Integer> {
+    String charset = "UTF-8";
 
     @Override
     protected Integer doInBackground(String... objects) {
@@ -111,8 +135,20 @@ class SendMessage extends AsyncTask<String, Void, Integer> {
         String provider = objects[2];
         String to = objects[3];
         String message = objects[4];
-        String url = "http://ubaid.tk/sms/sms.aspx?uid=" + username + "&pwd="
-                + password + "&msg=" + message + "&phone=" + to + "&provider=" + provider;
+        String query = null;
+        try {
+            query = String.format("uid=%s&pwd=%s&msg=%s&phone=%s&provider=%s",
+                    URLEncoder.encode(username,charset),
+                    URLEncoder.encode(password,charset),
+                    URLEncoder.encode(message,charset),
+                    URLEncoder.encode(to,charset),
+                    URLEncoder.encode(provider, charset)
+            );
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://ubaid.tk/sms/sms.aspx?" + query;
         URLConnection connection = null;
         try {
             connection = new URL(url).openConnection();
@@ -138,5 +174,6 @@ class SendMessage extends AsyncTask<String, Void, Integer> {
         }
         return result;
     }
+
 }
 

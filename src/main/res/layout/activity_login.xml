@@ -24,8 +24,9 @@
             android:id="@+id/username_editview"
             android:layout_alignBottom="@+id/username_textview"
             android:layout_toRightOf="@+id/username_textview"
+            android:minWidth="210dp"
             android:layout_marginLeft="25dp"
-            android:text="subbuboyapati"/>
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -42,7 +43,7 @@
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/password_editText"
-            android:text="9885071221"
+            android:minWidth="130dp"
             android:layout_alignBottom="@+id/password_textView"
             android:layout_alignLeft="@+id/username_editview"/>
 
@@ -77,6 +78,6 @@
             android:id="@+id/invalid_text"
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/provider_textView"
-            android:layout_alignRight="@+id/username_editview"/>
+            android:layout_alignRight="@+id/password_editText"/>
 
 </RelativeLayout>
